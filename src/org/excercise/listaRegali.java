@@ -1,14 +1,36 @@
 package org.excercise;
 
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class listaRegali {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+
 
         List<String> regali = new ArrayList<>();
+
+
+        File filepath = new File("./src/file/wish.txt");
+
+            try{
+                Scanner scanner = new Scanner(filepath);
+                while(scanner.hasNextLine()){
+                    String line= scanner.nextLine();
+                    regali.add(line);
+
+                }
+                scanner.close();
+            }catch (Exception e){
+            }
+
+
+
+
+        Scanner scanner = new Scanner(System.in);
 
         boolean continua = true;
 
@@ -16,7 +38,7 @@ public class listaRegali {
             System.out.print("Inserisci il regalo nella wishlist: ");
             String nome = scanner.nextLine();
 
-            System.out.println("Numeri di regali: " + " " + (regali.size()+1));
+            System.out.println("Numeri di regali: " + " " + regali.size());
 
             regali.add(nome);
 
@@ -35,6 +57,28 @@ public class listaRegali {
         System.out.println("La tua lista regali è:");
         for (String regalo : regali) {
             System.out.println(regalo);
+
         }
+
+        try  {
+            FileWriter svuota = new FileWriter(filepath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        for (String regalo : regali){
+
+
+            try {
+                FileWriter fileWriter = new FileWriter(filepath, true);
+                fileWriter.write(regalo);
+                fileWriter.write(System.lineSeparator());
+                fileWriter.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+        scanner.close();
     }
 }
